@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { useParams } from 'react-router-dom'
-import { Loading, LoadError, Picture, usePageTitle } from '../components/Common'
+import { LoadError, Picture, Reveal, Skeleton, SplitText, usePageTitle } from '../components/Motion'
 import { formatDate, getPost, useContent } from '../lib/content'
 import NotFound from './NotFound'
 
@@ -10,7 +10,7 @@ export default function Post() {
   const { data: post, error, loading, retry } = useContent(load)
   usePageTitle(post?.title)
 
-  if (loading) return <Loading />
+  if (loading) return <section className="band first"><Skeleton variant="detail" /></section>
   if (error) return <LoadError retry={retry} />
   if (!post) return <NotFound />
 
@@ -18,16 +18,16 @@ export default function Post() {
 
   return (
     <article className="post">
-      <h1>{post.title}</h1>
+      <SplitText as="h1" text={post.title} onLoad delay={0.2} />
       <time dateTime={post.published_at}>{formatDate(post.published_at)}</time>
       {post.cover_image_url && (
-        <Picture url={post.cover_image_url} alt="" sizes="(max-width: 760px) 100vw, 720px" priority />
+        <Picture url={post.cover_image_url} sizes="(max-width: 760px) 100vw, 720px" priority />
       )}
-      {blocks.map((block, index) =>
-        block.startsWith('## ')
-          ? <h2 key={index}>{block.slice(3)}</h2>
-          : <p key={index}>{block}</p>,
-      )}
+      {blocks.map((block, index) => (
+        <Reveal key={index} y={16}>
+          {block.startsWith('## ') ? <h2>{block.slice(3)}</h2> : <p>{block}</p>}
+        </Reveal>
+      ))}
     </article>
   )
 }

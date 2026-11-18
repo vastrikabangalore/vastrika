@@ -53,8 +53,7 @@ Create two Pages projects from this repository. Both use build command `npm run 
 ## Editing the site
 
 - Designs, collections, categories and posts: the admin panel
-- Contact email, location and services: `src/data.js`
-- About text: `src/components/About.jsx`
+- Designer name, contact email, location, about text, craft words and services: `src/data.js`
 - Portfolio styles: `src/index.css`
 
 Until Supabase keys are set, the portfolio shows sample content from `src/data.js`.

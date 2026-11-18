@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom'
-import { usePageTitle } from '../components/Common'
+import { SplitText, usePageTitle } from '../components/Motion'
 
 export default function NotFound() {
   usePageTitle('Page not found')
   return (
     <section className="band first">
-      <h1 className="page-title">Page not found</h1>
+      <SplitText as="h1" className="page-title" text="Page not found" onLoad delay={0.2} />
       <p className="status">This page may have moved or is no longer published.</p>
-      <Link to="/designs" className="btn">View designs</Link>
+      <Link to="/designs" className="btn"><span>View designs</span></Link>
     </section>
   )
 }

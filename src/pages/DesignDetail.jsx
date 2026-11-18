@@ -1,17 +1,24 @@
-import { useCallback } from 'react'
+import { AnimatePresence } from 'motion/react'
+import { useCallback, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { Loading, LoadError, Picture, usePageTitle } from '../components/Common'
+import Lightbox from '../components/Lightbox'
+import { LoadError, Picture, Reveal, Skeleton, SplitText, usePageTitle } from '../components/Motion'
 import { site } from '../data'
-import { getDesign, useContent } from '../lib/content'
+import { getDesign, getDesigns, useContent } from '../lib/content'
 import NotFound from './NotFound'
 
 export default function DesignDetail() {
   const { slug } = useParams()
-  const load = useCallback(() => getDesign(slug), [slug])
-  const { data: design, error, loading, retry } = useContent(load)
+  const load = useCallback(() => Promise.all([getDesign(slug), getDesigns()]), [slug])
+  const { data, error, loading, retry } = useContent(load)
+  const [design, designs = []] = data ?? []
+  const [viewer, setViewer] = useState(null)
+  const [slide, setSlide] = useState(1)
+  const closeViewer = useCallback(() => setViewer(null), [])
+  const gallery = useRef(null)
   usePageTitle(design?.title)
 
-  if (loading) return <Loading />
+  if (loading) return <Skeleton variant="detail" />
   if (error) return <LoadError retry={retry} />
   if (!design) return <NotFound />
 
@@ -26,36 +33,75 @@ export default function DesignDetail() {
   ].filter(([, value]) => value)
 
   const subject = encodeURIComponent(`Enquiry about ${design.title}`)
+  const position = designs.findIndex((item) => item.id === design.id)
+  const next = designs.length > 1 ? designs[(position + 1) % designs.length] : null
+
+  const trackSlide = () => {
+    const element = gallery.current
+    if (element) setSlide(Math.round(element.scrollLeft / element.clientWidth) + 1)
+  }
 
   return (
-    <article className="design">
-      <div className="design-images">
-        {design.images.length === 0 && <Picture color={design.color} label={design.title} />}
-        {design.images.map((image, index) => (
-          <Picture
-            key={image.id}
-            url={image.url}
-            alt={image.alt_text || `${design.title}, image ${index + 1}`}
-            sizes="(max-width: 860px) 100vw, 60vw"
-            priority={index === 0}
-          />
-        ))}
-      </div>
-      <div className="design-info">
-        <h1>{design.title}</h1>
-        {design.description && <p>{design.description}</p>}
-        {details.length > 0 && (
-          <dl className="details">
-            {details.map(([label, value]) => (
-              <div key={label}>
-                <dt>{label}</dt>
-                <dd>{value}</dd>
-              </div>
+    <>
+      <article className="design">
+        <div className="design-gallery">
+          <div className="design-images" ref={gallery} onScroll={trackSlide}>
+            {design.images.length === 0 && <Picture label={design.title} />}
+            {design.images.map((image, index) => (
+              <button
+                key={image.id}
+                className="design-image"
+                data-cursor="Enlarge"
+                onClick={() => setViewer(index)}
+                aria-label={`Enlarge image ${index + 1} of ${design.images.length}`}
+              >
+                <Picture
+                  url={image.url}
+                  alt={image.alt_text || `${design.title}, image ${index + 1}`}
+                  sizes="(max-width: 900px) 100vw, 60vw"
+                  priority={index === 0}
+                />
+              </button>
             ))}
-          </dl>
+          </div>
+          {design.images.length > 1 && (
+            <p className="slide-count" aria-hidden="true">{slide} of {design.images.length}</p>
+          )}
+        </div>
+        <div className="design-info">
+          <SplitText as="h1" text={design.title} onLoad delay={0.25} />
+          <Reveal delay={0.4}>
+            {design.description && <p className="design-text">{design.description}</p>}
+            {details.length > 0 && (
+              <dl className="details">
+                {details.map(([label, value]) => (
+                  <div key={label}>
+                    <dt>{label}</dt>
+                    <dd>{value}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+            <a className="btn" href={`mailto:${site.email}?subject=${subject}`}>
+              <span>Enquire about this design</span>
+            </a>
+          </Reveal>
+        </div>
+      </article>
+
+      {next && (
+        <Link to={`/designs/${next.slug}`} className="next-design" data-tone="dark" data-cursor="Next">
+          <span>Next design</span>
+          <SplitText as="h2" text={next.title} />
+          {next.images[0] && <Picture className="arch" url={next.images[0].url} alt="" sizes="30vw" />}
+        </Link>
+      )}
+
+      <AnimatePresence>
+        {viewer !== null && (
+          <Lightbox images={design.images} title={design.title} start={viewer} onClose={closeViewer} />
         )}
-        <a className="btn" href={`mailto:${site.email}?subject=${subject}`}>Enquire about this design</a>
-      </div>
-    </article>
+      </AnimatePresence>
+    </>
   )
 }

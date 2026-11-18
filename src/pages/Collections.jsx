@@ -1,4 +1,5 @@
-import { CollectionList, Loading, LoadError, usePageTitle } from '../components/Common'
+import { LoadError, Skeleton, SplitText, usePageTitle } from '../components/Motion'
+import { CollectionStack } from '../components/Work'
 import { getCollections, useContent } from '../lib/content'
 
 export default function Collections() {
@@ -7,10 +8,10 @@ export default function Collections() {
 
   return (
     <section className="band first">
-      <h1 className="page-title">Collections</h1>
-      {loading && <Loading />}
+      <SplitText as="h1" className="page-title" text="Collections" onLoad delay={0.2} />
+      {loading && <Skeleton />}
       {error && <LoadError retry={retry} />}
-      {data?.length > 0 && <CollectionList collections={data} />}
+      {data?.length > 0 && <CollectionStack collections={data} />}
       {data?.length === 0 && <p className="status">New collections are on the way.</p>}
     </section>
   )

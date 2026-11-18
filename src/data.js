@@ -1,15 +1,15 @@
-// Details used across the site. Replace the email with your real address.
+// Details used across the site.
 export const site = {
   name: 'Vastrika',
-  designer: 'Venkareshweri',
-  email: 'hello@example.com',
+  designer: 'Venkateshwari',
+  email: 'vastrika.bangalore@gmail.com',
   location: 'Bangalore, India',
 }
 
 export const crafts = ['Handloom', 'Zari', 'Block print', 'Shibori', 'Hand embroidery', 'Natural dye']
 
 export const statement =
-  'Vastrika is the Bangalore label of designer Venkareshweri, bringing Indian textiles and contemporary silhouettes together, one considered piece at a time.'
+  'Vastrika is the Bangalore label of designer Venkateshwari, bringing Indian textiles and contemporary silhouettes together, one considered piece at a time.'
 
 export const services = [
   { title: 'Bespoke couture', desc: 'One-of-a-kind garments designed and tailored to you.' },

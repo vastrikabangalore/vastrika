@@ -1,9 +1,9 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
-// https://vite.dev/config/
-// `base` matches the GitHub Pages project path: https://<user>.github.io/vastrika/
+// Cloudflare Pages and local development serve from the root.
+// The GitHub Pages workflow sets VITE_BASE=/vastrika/.
 export default defineConfig({
   plugins: [react()],
-  base: '/vastrika/',
+  base: process.env.VITE_BASE || '/',
 })

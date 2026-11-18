@@ -1,0 +1,5 @@
+project_id = "vastrika"
+
+# The function checks the admin login itself.
+[functions.cloudinary-sign]
+verify_jwt = false

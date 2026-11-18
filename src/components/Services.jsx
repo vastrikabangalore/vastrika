@@ -2,18 +2,16 @@ import { services } from '../data'
 
 export default function Services() {
   return (
-    <section className="section services" id="services">
-      <p className="eyebrow">What I Offer</p>
-      <h2>Services</h2>
-      <div className="service-list">
-        {services.map((s, i) => (
-          <div key={s.title} className="service">
-            <span className="num">0{i + 1}</span>
-            <h3>{s.title}</h3>
-            <p>{s.desc}</p>
+    <section className="services" id="services">
+      <h2>Work with the studio</h2>
+      <dl>
+        {services.map((service) => (
+          <div key={service.title}>
+            <dt>{service.title}</dt>
+            <dd>{service.desc}</dd>
           </div>
         ))}
-      </div>
+      </dl>
     </section>
   )
 }

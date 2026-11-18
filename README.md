@@ -60,4 +60,9 @@ Until Supabase keys are set, the portfolio shows sample content from `src/data.j
 
 ## GitHub Pages
 
-Pushes to `main` also deploy the portfolio to https://vastrikabangalore.github.io/vastrika/. To show live content there, add `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` under **Settings > Secrets and variables > Actions > Variables**.
+Pushes to `main` deploy both apps:
+
+- Portfolio: https://vastrikabangalore.github.io/vastrika/
+- Admin: https://vastrikabangalore.github.io/vastrika/admin/
+
+Add `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` under **Settings > Secrets and variables > Actions > Variables**. Add `https://vastrikabangalore.github.io` to the `ADMIN_ORIGIN` secret in Supabase so uploads work from the live admin.

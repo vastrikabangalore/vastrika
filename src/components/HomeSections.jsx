@@ -20,14 +20,13 @@ export function Hero({ designs }) {
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.25 })
 
   const from = mobile
-    ? 'inset(20% 13% 21% 13% round 50vw 50vw 0vw 0vw)'
-    : 'inset(15% 34% 13% 34% round 20vw 20vw 0vw 0vw)'
+    ? 'inset(25% 12% 19% 12% round 50vw 50vw 0vw 0vw)'
+    : 'inset(45% 36% 6% 36% round 20vw 20vw 0vw 0vw)'
   const clipPath = useTransform(progress, [0, 0.72], [from, 'inset(0% 0% 0% 0% round 0vw 0vw 0vw 0vw)'])
   const imageScale = useTransform(progress, [0, 0.8], [1.18, 1])
-  const wordY = useTransform(progress, [0, 0.55], ['0%', '-42%'])
-  const wordOpacity = useTransform(progress, [0.22, 0.56], [1, 0])
+  const wordY = useTransform(progress, [0, 0.4], ['0%', '-30%'])
+  const wordOpacity = useTransform(progress, [0.04, 0.3], [1, 0])
   const introOpacity = useTransform(progress, [0, 0.18], [1, 0])
-  const shade = useTransform(progress, [0.35, 0.8], [0, 0.42])
   const endOpacity = useTransform(progress, [0.68, 0.86], [0, 1])
   const endY = useTransform(progress, [0.68, 0.86], [28, 0])
 
@@ -41,7 +40,7 @@ export function Hero({ designs }) {
   const image = current?.images[0]
 
   return (
-    <section ref={ref} className="hero" id="hero" data-tone="dark">
+    <section ref={ref} className="hero" id="hero">
       <div className="hero-sticky">
         <motion.div
           className="hero-window"
@@ -67,7 +66,6 @@ export function Hero({ designs }) {
               ) : <div className="fabric" />}
             </AnimatePresence>
           </motion.div>
-          <motion.div className="hero-shade" style={{ opacity: shade }} />
         </motion.div>
 
         <motion.div className="hero-word" style={reduced ? undefined : { y: wordY, opacity: wordOpacity }}>
@@ -80,14 +78,14 @@ export function Hero({ designs }) {
         >
           <Reveal onLoad delay={delay + 0.55} y={14}><p className="hero-by">by {site.designer}</p></Reveal>
           <Reveal onLoad delay={delay + 0.68} y={14} className="hero-right">
-            <p>Contemporary Indian couture from Bangalore, rooted in handloom.</p>
+            <p>Contemporary Indian couture, rooted in handloom.</p>
             <span className="scroll-cue">Scroll <i /></span>
           </Reveal>
         </motion.div>
 
         <motion.div className="hero-end" style={reduced ? { opacity: 0 } : { opacity: endOpacity, y: endY }}>
           <p>Every piece begins with the cloth.</p>
-          <Link to="/designs" className="btn light"><span>View designs</span></Link>
+          <Link to="/designs" className="btn"><span>View designs</span></Link>
         </motion.div>
       </div>
     </section>
@@ -221,7 +219,7 @@ function MagneticLink({ href, children }) {
 
 export function Contact() {
   return (
-    <section className="contact" id="contact" data-tone="dark">
+    <section className="contact" id="contact">
       <SplitText text="Tell us what you would like made." />
       <Reveal className="contact-row">
         <p>For commissions, collaborations and studio appointments with {site.designer}.</p>

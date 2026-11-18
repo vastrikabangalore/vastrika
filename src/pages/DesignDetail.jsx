@@ -90,7 +90,7 @@ export default function DesignDetail() {
       </article>
 
       {next && (
-        <Link to={`/designs/${next.slug}`} className="next-design" data-tone="dark" data-cursor="Next">
+        <Link to={`/designs/${next.slug}`} className="next-design" data-cursor="Next">
           <span>Next design</span>
           <SplitText as="h2" text={next.title} />
           {next.images[0] && <Picture className="arch" url={next.images[0].url} alt="" sizes="30vw" />}

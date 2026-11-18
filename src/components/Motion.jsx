@@ -7,7 +7,7 @@ const VIEW = { once: true, margin: '0px 0px -12% 0px' }
 
 export function usePageTitle(title) {
   useEffect(() => {
-    document.title = title ? `${title} | Vastrika` : 'Vastrika by Venkateshwari | Fashion Designer, Bangalore'
+    document.title = title ? `${title} | Vastrika` : 'Vastrika by Venkateshwari | Fashion Designer'
   }, [title])
 }
 

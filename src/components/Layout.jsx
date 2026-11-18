@@ -114,22 +114,14 @@ function Menu({ onClose }) {
 function Header() {
   const { pathname } = useLocation()
   const { scrollY } = useScroll()
-  const [state, setState] = useState({ hidden: false, dark: false, solid: false })
+  const [state, setState] = useState({ hidden: false, solid: false })
   const [menuOpen, setMenuOpen] = useState(false)
   const closeMenu = useCallback(() => setMenuOpen(false), [])
 
   const measure = useCallback((y, previous = y) => {
-    const onDark = [...document.querySelectorAll('[data-tone="dark"]')].some((element) => {
-      const box = element.getBoundingClientRect()
-      return box.top <= 36 && box.bottom >= 36
-    })
-    const next = {
-      hidden: y > previous && y > 140,
-      dark: onDark,
-      solid: y > 24 && !onDark,
-    }
+    const next = { hidden: y > previous && y > 140, solid: y > 24 }
     setState((current) => (
-      current.hidden === next.hidden && current.dark === next.dark && current.solid === next.solid ? current : next
+      current.hidden === next.hidden && current.solid === next.solid ? current : next
     ))
   }, [])
 
@@ -144,7 +136,7 @@ function Header() {
     }
   }, [pathname, measure])
 
-  const classes = ['header', state.dark && 'on-dark', state.solid && 'solid'].filter(Boolean).join(' ')
+  const classes = state.solid ? 'header solid' : 'header'
 
   return (
     <>
@@ -252,7 +244,7 @@ export default function Layout() {
 
 function Footer() {
   return (
-    <footer className="footer" data-tone="dark">
+    <footer className="footer">
       <div className="footer-top">
         <nav aria-label="Footer">
           {links.map((link) => <Link key={link.to} to={link.to}>{link.label}</Link>)}

@@ -100,7 +100,6 @@ export function CollectionsRail({ collections }) {
     <section
       ref={section}
       className="rail-section"
-      data-tone="dark"
       style={wide ? { height: `calc(100vh + ${distance}px)` } : undefined}
     >
       <div className="rail-sticky">
